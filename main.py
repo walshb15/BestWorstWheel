@@ -5,7 +5,7 @@ from section import Section
 
 def main():
     pygame.init()
-    movies = ["Troll 2", "The Room", "Miami Connection"]
+    movies = ["Troll 2", "The Room", "Miami Connection", "Manos: The Hands of Fate", "Sharknado", "Birdemic"]
     spinning = False
     screen = pygame.display.set_mode((700, 700))
     white = (255, 255, 255)
@@ -38,7 +38,8 @@ def main():
         pygame.draw.circle(surface, black, center, radius, 1)
         #Create and draw a section
         testSection = Section(center, radius)
-        testSection.draw(surface, black, angle, chord)
+        for i, j in enumerate(movies):
+            testSection.draw(surface, black, angle, radians(theta) * i)
         #update the display
         pygame.display.update()
 
