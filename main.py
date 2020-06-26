@@ -1,5 +1,6 @@
 import pygame
 from math import sin, cos, atan2, pi, radians
+from section import Section
 
 
 def main():
@@ -12,6 +13,7 @@ def main():
     width, height = surface.get_size()
     center = (int(width / 2), int(height / 2))
     radius = int(width / 3)
+    
     angle = radians(0)
     endPoint = (center[0] + radius * cos(angle), center[1] + radius * sin(-angle))
     #line = pygame.draw.line(surface, black, center, endPoint)
@@ -19,15 +21,19 @@ def main():
     pygame.display.set_caption("Wheel of the Worst!")
     running = True
     while running:
+        angle += radians(0.1)
+        #Reset the screen
+        screen.fill(white)
+        endPoint = (center[0] + radius * cos(angle), center[1] + radius * sin(-angle))
+        pygame.draw.circle(surface, black, center, radius, 1)
+        #pygame.draw.line(surface, black, center, endPoint)
+        testSection = Section(center, radius)
+        testSection.draw(surface, black, angle)
+        pygame.display.update()
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 running = False
-        angle += radians(1)
-        screen.fill(white)
-        endPoint = (center[0] + radius * cos(angle), center[1] + radius * sin(-angle))
-        pygame.draw.circle(surface, black, center, radius, 1)
-        pygame.draw.line(surface, black, center, endPoint)
-        pygame.display.update()
 
 main()
