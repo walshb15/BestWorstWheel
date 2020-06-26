@@ -1,16 +1,13 @@
 import pygame
 from math import sin, cos, atan2, pi, radians
 
-#This class represents sections on the wheel. They will need to somehow
-#dynamically size themselves depending on how many entries there are.
-
+#This class represents each slice of the wheel.
 class Section:
-    def __init__(self, c, r):
+    def __init__(self, text, c, r):
+        self.name = text
         self.center = c
         self.radius = r
 
-    def draw(self, surface, outline, angle, chord):
-        #e1 = (self.center[0] + self.radius * cos(angle), self.center[1] + self.radius * sin(-angle))
-        e1 = (self.center[0] + self.radius * cos(angle + chord), self.center[1] + self.radius * sin(-angle - chord))
-        pygame.draw.line(surface, outline, self.center, e1)
-        #pygame.draw.line(surface, outline, self.center, e2)
+    #Function to draw the text for this section in the appropriate spot
+    def draw(self):
+        pass

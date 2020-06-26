@@ -1,13 +1,16 @@
 import pygame
 from math import sin, cos, atan2, pi, radians, degrees
 from section import Section
+from wheel import Wheel
 
 
 def main():
     pygame.init()
+    #movies = ["Troll 2", "The Room", "Miami Connection"]
     movies = ["Troll 2", "The Room", "Miami Connection", "Manos: The Hands of Fate", "Sharknado", "Birdemic"]
-    spinning = False
-    screen = pygame.display.set_mode((700, 700))
+    spinning = True
+    #Note, display size currently affects how fast the circle spins
+    screen = pygame.display.set_mode((700, 700), pygame.HWSURFACE)
     white = (255, 255, 255)
     black = (0, 0, 0)
     screen.fill(white)
@@ -27,6 +30,7 @@ def main():
     pygame.display.flip()
     pygame.display.set_caption("Wheel of the Worst!")
     running = True
+    wheel = Wheel(center, radius, movies)
     #Game loop
     while running:
         if spinning:
@@ -34,19 +38,13 @@ def main():
             angle += radians(0.1)
         #Reset the screen
         screen.fill(white)
-        #Draw the circle that will house the sections
-        pygame.draw.circle(surface, black, center, radius, 1)
         #Create and draw a section
-        testSection = Section(center, radius)
-        for i, j in enumerate(movies):
-            testSection.draw(surface, black, angle, radians(theta) * i)
+        wheel.draw(surface, black, angle, radians(theta))
         #update the display
         pygame.display.update()
-
         #Handle if the user hits the X button
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 running = False
-
 main()
