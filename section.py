@@ -9,8 +9,8 @@ class Section:
         self.center = c
         self.radius = r
 
-    def draw(self, surface, outline, angle):
+    def draw(self, surface, outline, angle, chord):
         e1 = (self.center[0] + self.radius * cos(angle), self.center[1] + self.radius * sin(-angle))
-        e2 = (self.center[0] + self.radius * cos(angle + 33), self.center[1] + self.radius * sin(-angle - 33))
+        e2 = (self.center[0] + self.radius * cos(angle + chord), self.center[1] + self.radius * sin(-angle - chord))
         pygame.draw.line(surface, outline, self.center, e1)
         pygame.draw.line(surface, outline, self.center, e2)
