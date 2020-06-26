@@ -6,6 +6,8 @@ from wheel import Wheel
 
 def main():
     pygame.init()
+    myfont = pygame.font.SysFont('Comic Sans MS', 30)
+    textsurface = myfont.render("WHEEL OF THE WORST!", False, (0, 0, 0))
     #movies = ["Troll 2", "The Room", "Miami Connection"]
     movies = ["Troll 2", "The Room", "Miami Connection", "Manos: The Hands of Fate", "Sharknado", "Birdemic"]
     spinning = True
@@ -33,13 +35,17 @@ def main():
     wheel = Wheel(center, radius, movies)
     #Game loop
     while running:
+        textsurface = myfont.render("WHEEL OF THE WORST!", False, (0, 0, 0))
         if spinning:
             #Modify the angle so that the sections will rotate
             angle += radians(0.1)
+            textsurface = pygame.transform.rotate(textsurface, degrees(angle))
         #Reset the screen
         screen.fill(white)
         #Create and draw a section
         wheel.draw(surface, black, angle, radians(theta))
+        #textsurface = myfont.render("WHEEL OF THE WORST!", False, (0, 0, 0))
+        screen.blit(textsurface,center)
         #update the display
         pygame.display.update()
         #Handle if the user hits the X button
