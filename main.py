@@ -70,7 +70,6 @@ def rotate(surface, a, pos):
     pos: The position to rotate at
     '''
     angle = degrees(a)
-    rotated_offset.rotate(angle)
     rotated_surface = pygame.transform.rotozoom(surface, angle, 1)
     rotated_rect = rotated_surface.get_rect(center=pos)
     return rotated_surface, rotated_rect
