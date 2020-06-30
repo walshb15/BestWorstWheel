@@ -2,7 +2,7 @@ import pygame
 from math import sin, cos, atan2, pi, radians, degrees
 from section import Section
 from wheel import Wheel
-
+import random
 
 def main():
     pygame.init()
@@ -24,21 +24,25 @@ def main():
     #Central angle in degrees
     theta = arclen / radius
     chord = 2 * radius * sin(radians(theta) / 2)
-    print("Theta:", theta)
-    print("Chord:", chord)
-    print("Diameter:", radius*2)
     angle = radians(0)
     pygame.display.flip()
     pygame.display.set_caption("Wheel of the Worst!")
     running = True
     wheel = Wheel(center, radius, movies)
+    speed = random.randint(10, 50)
+    slowdown = random.randint(1, 7) / 1000
+    tri_points = [(350, 115), (330, 95), (370, 95)]
     #Game loop
     while running:
         if spinning:
             #Modify the angle so that the sections will rotate
-            angle += radians(0.1)
+            angle += radians(speed)
+            speed -= slowdown
+            if (speed <= 0):
+                spinning = False
         #Reset the screen
         screen.fill(white)
+        pygame.draw.polygon(surface, (255, 0, 0), tri_points, 0)
         #Create and draw a section
         wheel.draw(surface, black, angle, radians(theta))
         #update the display
@@ -48,19 +52,5 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 running = False
-
-def rotate(surface, a, pos):
-    '''
-    Function to rotate a surface in a centered manner at a
-    specified position
-    
-    surface: the surface to rotate
-    a: The angle to rotate by
-    pos: The position to rotate at
-    '''
-    angle = degrees(a) + degrees(pi / 6)
-    rotated_surface = pygame.transform.rotozoom(surface, angle, 1)
-    rotated_rect = rotated_surface.get_rect(center=pos)
-    return rotated_surface, rotated_rect
 
 main()

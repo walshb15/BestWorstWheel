@@ -1,7 +1,7 @@
 import pygame
 from math import sin, cos, atan2, pi, radians, degrees
 
-def rotate(surface, a, pos):
+def rotate(surface, a, pos, diff, offset, count):
     '''
     Function to rotate a surface in a centered manner at a
     specified position
@@ -17,16 +17,18 @@ def rotate(surface, a, pos):
 
 #This class represents each slice of the wheel.
 class Section:
-    def __init__(self, text, c, r):
+    def __init__(self, text, c, r, count):
         self.name = text
         self.center = c
         self.radius = r
+        #Number of sections
+        self.count = count
         self.font = pygame.font.SysFont('Comic Sans MS', 20)
         self.textsurface = self.font.render(self.name, False, (0, 0, 0))
 
     #Function to draw the text for this section in the appropriate spot
     def draw(self, surface, angle, theta, offset):
-        rotsurface, textrect = rotate(self.textsurface, angle, self.center)
+        rotsurface, textrect = rotate(self.textsurface, angle, self.center, theta, offset, self.count)
         place = textrect.topleft
         e1 = (place[0] + (self.radius / 2) * cos(angle + (0.5 + offset) * theta),
               place[1] + (self.radius / 2) * sin(-angle - (0.5 + offset) * theta))

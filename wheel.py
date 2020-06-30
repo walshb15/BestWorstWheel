@@ -10,7 +10,7 @@ class Wheel:
         self.sections = list()
         self.items = i
         for i in self.items:
-            newSection = Section(i, self.center, self.radius)
+            newSection = Section(i, self.center, self.radius, len(self.items))
             self.sections.append(newSection)
 
     def draw(self, surface, outline, angle, dist):
