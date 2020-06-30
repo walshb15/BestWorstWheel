@@ -21,6 +21,8 @@ def main():
     width, height = surface.get_size()
     center = (int(width / 2), int(height / 2))
     textrect = textsurface.get_rect()
+    #REMOVE THIS LATER
+    meme = textrect.topleft
     radius = int(width / 3)
     circumfrence = 2 * radius * pi
     arclen = degrees(circumfrence / len(movies))
@@ -37,20 +39,21 @@ def main():
     wheel = Wheel(center, radius, movies)
     #Game loop
     while running:
+        e1 = center + meme
         #textRot = center
         if spinning:
             #Modify the angle so that the sections will rotate
             angle += radians(0.1)
             #rotsurface = pygame.transform.rotozoom(textsurface, degrees(angle), 1)
             rotsurface, textrect = rotate(textsurface, angle, center)
+            meme = textrect.topleft
+            e1 = (meme[0] + (radius / 2) * cos(angle + radians(theta) / 2), meme[1] + (radius / 2) * sin(-angle - radians(theta) / 2))
         #Reset the screen
         screen.fill(white)
         #Create and draw a section
         wheel.draw(surface, black, angle, radians(theta))
         #textsurface = myfont.render("WHEEL OF THE WORST!", False, (0, 0, 0))
         #screen.blit(rotsurface,(center[0] - textrect.width / 2, center[1] - textrect.height / 2))
-        meme = textrect.topleft
-        e1 = (meme[0] + (radius / 2) * cos(angle + radians(theta)), meme[1] + (radius / 2) * sin(-angle - radians(theta)))
         screen.blit(rotsurface, e1)
         #update the display
         pygame.display.update()
@@ -69,7 +72,7 @@ def rotate(surface, a, pos):
     a: The angle to rotate by
     pos: The position to rotate at
     '''
-    angle = degrees(a)
+    angle = degrees(a) + degrees(pi / 6)
     rotated_surface = pygame.transform.rotozoom(surface, angle, 1)
     rotated_rect = rotated_surface.get_rect(center=pos)
     return rotated_surface, rotated_rect
