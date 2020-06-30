@@ -16,7 +16,9 @@ class Wheel:
     def draw(self, surface, outline, angle, dist):
         #Draw the circle that will house the sections
         pygame.draw.circle(surface, outline, self.center, self.radius, 1)
+        #TEST LINE
+        #self.sections[0].draw(surface, angle, dist, 3.5)
         for num, i in enumerate(self.items):
             e1 = (self.center[0] + self.radius * cos(angle + dist * num), self.center[1] + self.radius * sin(-angle - dist * num))
             pygame.draw.line(surface, outline, self.center, e1)
-            self.sections[num].draw(surface, angle, dist)
+            self.sections[num].draw(surface, angle, dist, num)
