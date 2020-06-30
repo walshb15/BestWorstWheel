@@ -19,4 +19,4 @@ class Wheel:
         for num, i in enumerate(self.items):
             e1 = (self.center[0] + self.radius * cos(angle + dist * num), self.center[1] + self.radius * sin(-angle - dist * num))
             pygame.draw.line(surface, outline, self.center, e1)
-            self.sections[num].draw()
+            self.sections[num].draw(surface, angle, dist)

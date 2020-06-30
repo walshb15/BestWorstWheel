@@ -9,8 +9,6 @@ def main():
     myfont = pygame.font.SysFont('Comic Sans MS', 20)
     white = (255, 255, 255)
     black = (0, 0, 0)
-    textsurface = myfont.render("Troll 2", False, black)
-    rotsurface = textsurface
     #movies = ["Troll 2", "The Room", "Miami Connection"]
     movies = ["Troll 2", "The Room", "Miami Connection", "Manos: The Hands of Fate", "Sharknado", "Birdemic"]
     spinning = True
@@ -20,9 +18,6 @@ def main():
     surface = pygame.display.get_surface()
     width, height = surface.get_size()
     center = (int(width / 2), int(height / 2))
-    textrect = textsurface.get_rect()
-    #REMOVE THIS LATER
-    meme = textrect.topleft
     radius = int(width / 3)
     circumfrence = 2 * radius * pi
     arclen = degrees(circumfrence / len(movies))
@@ -39,11 +34,6 @@ def main():
     wheel = Wheel(center, radius, movies)
     #Game loop
     while running:
-        e1 = center + meme
-        rotsurface, textrect = rotate(textsurface, angle, center)
-        e1 = (meme[0] + (radius / 2) * cos(angle + radians(theta) / 2), meme[1] + (radius / 2) * sin(-angle - radians(theta) / 2))
-        meme = textrect.topleft
-        #textRot = center
         if spinning:
             #Modify the angle so that the sections will rotate
             angle += radians(0.1)
@@ -51,9 +41,6 @@ def main():
         screen.fill(white)
         #Create and draw a section
         wheel.draw(surface, black, angle, radians(theta))
-        #textsurface = myfont.render("WHEEL OF THE WORST!", False, (0, 0, 0))
-        #screen.blit(rotsurface,(center[0] - textrect.width / 2, center[1] - textrect.height / 2))
-        screen.blit(rotsurface, e1)
         #update the display
         pygame.display.update()
         #Handle if the user hits the X button
