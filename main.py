@@ -40,14 +40,13 @@ def main():
     #Game loop
     while running:
         e1 = center + meme
+        rotsurface, textrect = rotate(textsurface, angle, center)
+        e1 = (meme[0] + (radius / 2) * cos(angle + radians(theta) / 2), meme[1] + (radius / 2) * sin(-angle - radians(theta) / 2))
+        meme = textrect.topleft
         #textRot = center
         if spinning:
             #Modify the angle so that the sections will rotate
             angle += radians(0.1)
-            #rotsurface = pygame.transform.rotozoom(textsurface, degrees(angle), 1)
-            rotsurface, textrect = rotate(textsurface, angle, center)
-            meme = textrect.topleft
-            e1 = (meme[0] + (radius / 2) * cos(angle + radians(theta) / 2), meme[1] + (radius / 2) * sin(-angle - radians(theta) / 2))
         #Reset the screen
         screen.fill(white)
         #Create and draw a section
