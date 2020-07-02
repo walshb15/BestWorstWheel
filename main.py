@@ -10,7 +10,7 @@ def main():
     white = (255, 255, 255)
     black = (0, 0, 0)
     #movies = ["Troll 2", "The Room", "Miami Connection"]
-    movies = ["Troll 2", "The Room", "Miami Connection", "Manos: The Hands of Fate", "Sharknado", "Birdemic"]
+    movies = ["Troll 2", "The Room", "Miami Connection", "Manos: The Hands of Fate", "Sharknado", "Birdemic", "Ghost Shark"]
     spinning = True
     #Note, display size currently affects how fast the circle spins
     screen = pygame.display.set_mode((700, 700), pygame.HWSURFACE)
@@ -21,6 +21,8 @@ def main():
     radius = int(width / 3)
     circumfrence = 2 * radius * pi
     arclen = degrees(circumfrence / len(movies))
+    print("CIRCUMFRENCE:", degrees(circumfrence))
+    print("ARCLEN:", arclen)
     #Central angle in degrees
     theta = arclen / radius
     chord = 2 * radius * sin(radians(theta) / 2)

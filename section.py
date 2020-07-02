@@ -1,7 +1,7 @@
 import pygame
 from math import sin, cos, atan2, pi, radians, degrees
 
-def rotate(surface, a, pos, diff, offset, count):
+def rotate(surface, a, pos, diff, offset):
     '''
     Function to rotate a surface in a centered manner at a
     specified position
@@ -10,7 +10,7 @@ def rotate(surface, a, pos, diff, offset, count):
     a: The angle to rotate by
     pos: The position to rotate at
     '''
-    angle = degrees(a)
+    angle = degrees(a) + degrees(diff) / 2 * (1 + offset*2)
     rotated_surface = pygame.transform.rotozoom(surface, angle, 1)
     rotated_rect = rotated_surface.get_rect(center=pos)
     return rotated_surface, rotated_rect
@@ -23,12 +23,12 @@ class Section:
         self.radius = r
         #Number of sections
         self.count = count
-        self.font = pygame.font.SysFont('Comic Sans MS', 20)
+        self.font = pygame.font.SysFont('Comic Sans MS', 16)
         self.textsurface = self.font.render(self.name, False, (0, 0, 0))
 
     #Function to draw the text for this section in the appropriate spot
     def draw(self, surface, angle, theta, offset):
-        rotsurface, textrect = rotate(self.textsurface, angle, self.center, theta, offset, self.count)
+        rotsurface, textrect = rotate(self.textsurface, angle, self.center, theta, offset)
         place = textrect.topleft
         e1 = (place[0] + (self.radius / 2) * cos(angle + (0.5 + offset) * theta),
               place[1] + (self.radius / 2) * sin(-angle - (0.5 + offset) * theta))
