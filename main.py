@@ -3,14 +3,16 @@ from math import sin, cos, atan2, pi, radians, degrees
 from section import Section
 from wheel import Wheel
 import random
+import sqlite3
 
 def main():
     pygame.init()
     myfont = pygame.font.SysFont('Comic Sans MS', 20)
     white = (255, 255, 255)
     black = (0, 0, 0)
+    movies = []
     #movies = ["Troll 2", "The Room", "Miami Connection"]
-    movies = ["Troll 2", "The Room", "Miami Connection", "Manos: The Hands of Fate", "Sharknado", "Birdemic", "Ghost Shark"]
+    #movies = ["Troll 2", "The Room", "Miami Connection", "Manos: The Hands of Fate", "Sharknado", "Birdemic", "Ghost Shark"]
     spinning = True
     #Note, display size currently affects how fast the circle spins
     screen = pygame.display.set_mode((700, 700), pygame.HWSURFACE)
@@ -20,12 +22,14 @@ def main():
     center = (int(width / 2), int(height / 2))
     radius = int(width / 3)
     circumfrence = 2 * radius * pi
-    arclen = degrees(circumfrence / len(movies))
-    print("CIRCUMFRENCE:", degrees(circumfrence))
-    print("ARCLEN:", arclen)
+    if len(movies) > 0:
+        arclen = degrees(circumfrence / len(movies))
+    else:
+        arclen = 360
     #Central angle in degrees
     theta = arclen / radius
     chord = 2 * radius * sin(radians(theta) / 2)
+    #The current angle of rotation
     angle = radians(0)
     pygame.display.flip()
     pygame.display.set_caption("Wheel of the Worst!")
@@ -36,7 +40,7 @@ def main():
     tri_points = [(350, 115), (330, 95), (370, 95)]
     #Game loop
     while running:
-        if spinning:
+        if spinning and len(movies) > 0:
             #Modify the angle so that the sections will rotate
             angle += radians(speed)
             speed -= slowdown
