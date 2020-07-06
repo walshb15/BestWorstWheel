@@ -2,6 +2,7 @@ import pygame
 from math import sin, cos, atan2, pi, radians, degrees
 from section import Section
 from wheel import Wheel
+from button import Button
 import random
 import sqlite3
 
@@ -10,10 +11,11 @@ def main():
     myfont = pygame.font.SysFont('Comic Sans MS', 20)
     white = (255, 255, 255)
     black = (0, 0, 0)
-    movies = []
+    movies = ["Who Killed Captain Alex", "Killer Bean Forever", "Backstroke of the West", "Shriek of the Mutilated"]
     #movies = ["Troll 2", "The Room", "Miami Connection"]
     #movies = ["Troll 2", "The Room", "Miami Connection", "Manos: The Hands of Fate", "Sharknado", "Birdemic", "Ghost Shark"]
-    spinning = True
+    running = True
+    spinning = False
     #Note, display size currently affects how fast the circle spins
     screen = pygame.display.set_mode((700, 700), pygame.HWSURFACE)
     screen.fill(white)
@@ -33,13 +35,17 @@ def main():
     angle = radians(0)
     pygame.display.flip()
     pygame.display.set_caption("Wheel of the Worst!")
-    running = True
     wheel = Wheel(center, radius, movies)
     speed = random.randint(10, 50)
     slowdown = random.randint(1, 7) / 1000
+    #Points of the arrow that will point to the winning item
     tri_points = [(350, 115), (330, 95), (370, 95)]
+    #Spin button
+    spinButton = Button("SPIN", (width-125, 25), (100, 50), (0, 255, 0),
+                        (247, 255, 5), (0, 135, 23), "Comic Sans MS", 30, black)
     #Game loop
     while running:
+        mousePos = pygame.mouse.get_pos()
         if spinning and len(movies) > 0:
             #Modify the angle so that the sections will rotate
             angle += radians(speed)
@@ -51,6 +57,8 @@ def main():
         pygame.draw.polygon(surface, (255, 0, 0), tri_points, 0)
         #Create and draw a section
         wheel.draw(surface, black, angle, radians(theta))
+        #Draw the buttons
+        spinButton.draw(surface, black)
         #update the display
         pygame.display.update()
         #Handle if the user hits the X button
@@ -58,5 +66,19 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 running = False
+            if event.type == pygame.MOUSEMOTION:
+                spinButton.mouseHover(mousePos)
+            #If the user clicked
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                #If the user clicked while hovering over the button
+                if spinButton.mouseHover(mousePos):
+                    spinButton.click()
+                    angle = radians(0)
+                    speed = random.randint(10, 50)
+                    slowdown = random.randint(1, 7) / 1000
+                    spinning = True
+            #Change the color of buttons back when mouse is released
+            if event.type == pygame.MOUSEBUTTONUP:
+                spinButton.release()
 
 main()

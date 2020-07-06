@@ -26,10 +26,10 @@ class Section:
         #Number of sections
         self.count = count
         textlen = len(text)
-        fontsize = 20
+        fontsize = 18
         self.font = pygame.font.SysFont('Comic Sans MS', fontsize)
         print(self.name, "size:", self.font.get_linesize())
-        self.textsurface = self.font.render(self.name, False, (0, 0, 0))
+        self.textsurface = self.font.render(self.name, True, (0, 0, 0))
 
     #Function to draw the text for this section in the appropriate spot
     def draw(self, surface, angle, theta, offset):
@@ -47,6 +47,7 @@ class Section:
               place[1] + (self.radius / 2) * sin(-angle - (0.5 + offset) * theta))
         if (self.count > 1):
             surface.blit(rotsurface, e1)
+        #If there is only one section, draw the text at the center of the wheel
         else:
             surface.blit(rotsurface, (self.center[0] - textrect.width / 2,
                                       self.center[1] - textrect.height / 2))
