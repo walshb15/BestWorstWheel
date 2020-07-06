@@ -31,6 +31,9 @@ class Section:
         print(self.name, "size:", self.font.get_linesize())
         self.textsurface = self.font.render(self.name, True, (0, 0, 0))
 
+    def __repr__(self):
+        return self.name
+
     #Function to draw the text for this section in the appropriate spot
     def draw(self, surface, angle, theta, offset):
         '''

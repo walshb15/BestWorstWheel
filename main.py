@@ -45,6 +45,8 @@ def main():
     spinButton = Button("SPIN", (width-125, 25), (100, 50), (0, 255, 0),
                         (247, 255, 5), (0, 135, 23), "Comic Sans MS", 30, black)
     textInputer = InputField((center[0]-150, height-75), (300, 50), "Comic Sans MS", 30)
+    addButton = Button("Add Item", (center[0] + 175, height-75), (125, 50), (0, 255, 0),
+                       (247, 255, 5), (0, 135, 23), "Comic Sans MS", 20, black)
     #Game loop
     while running:
         mousePos = pygame.mouse.get_pos()
@@ -61,6 +63,7 @@ def main():
         wheel.draw(surface, black, angle, radians(theta))
         #Draw the buttons
         spinButton.draw(surface, black)
+        addButton.draw(surface, black)
         textInputer.draw(surface)
         #update the display
         pygame.display.update()
@@ -71,6 +74,7 @@ def main():
                 running = False
             if event.type == pygame.MOUSEMOTION:
                 spinButton.mouseHover(mousePos)
+                addButton.mouseHover(mousePos)
                 textInputer.mouseHover(mousePos)
             #If the user clicked
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -81,6 +85,23 @@ def main():
                     speed = random.randint(10, 50)
                     slowdown = random.randint(1, 7) / 1000
                     spinning = True
+                if addButton.mouseHover(mousePos):
+                    addText = textInputer.getText()
+                    if addText.strip() != "":
+                        movies.append(addText)
+                        '''REUSED CODE'''
+                        if len(movies) > 0:
+                            arclen = degrees(circumfrence / len(movies))
+                        else:
+                            arclen = 360
+                        #Central angle in degrees
+                        theta = arclen / radius
+                        chord = 2 * radius * sin(radians(theta) / 2)
+                        '''REUSED CODE'''
+                        wheel.addItem(movies[-1])
+                    else:
+                        textInputer.click()
+                    textInputer.clearText()
                 if textInputer.mouseHover(mousePos):
                     textInputer.click()
                 else:

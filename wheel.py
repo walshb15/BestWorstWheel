@@ -4,14 +4,18 @@ from section import Section
 
 #This class draws the wheel and sets up all the sections
 class Wheel:
-    def __init__(self, c, r, i):
+    def __init__(self, c, r, items):
         self.center = c
         self.radius = r
         self.sections = list()
-        self.items = i
+        self.items = items
         for i in self.items:
             newSection = Section(i, self.center, self.radius, len(self.items))
             self.sections.append(newSection)
+
+    def addItem(self, i):
+        newSection = Section(i, self.center, self.radius, len(self.items))
+        self.sections.append(newSection)
 
     def draw(self, surface, outline, angle, dist):
         '''

@@ -28,6 +28,9 @@ class InputField(Button):
     def getText(self):
         return self.text
 
+    def clearText(self):
+        self.text = ""
+
     def draw(self, surface):
         '''
         Function to draw the field. This function is a bit messy, so you may
