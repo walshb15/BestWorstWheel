@@ -3,6 +3,7 @@ from math import sin, cos, atan2, pi, radians, degrees
 from section import Section
 from wheel import Wheel
 from button import Button
+from inputfield import InputField
 import random
 import sqlite3
 
@@ -43,6 +44,7 @@ def main():
     #Spin button
     spinButton = Button("SPIN", (width-125, 25), (100, 50), (0, 255, 0),
                         (247, 255, 5), (0, 135, 23), "Comic Sans MS", 30, black)
+    textInputer = InputField((center[0]-150, height-75), (300, 50), "Comic Sans MS", 30)
     #Game loop
     while running:
         mousePos = pygame.mouse.get_pos()
@@ -59,6 +61,7 @@ def main():
         wheel.draw(surface, black, angle, radians(theta))
         #Draw the buttons
         spinButton.draw(surface, black)
+        textInputer.draw(surface)
         #update the display
         pygame.display.update()
         #Handle if the user hits the X button
@@ -68,6 +71,7 @@ def main():
                 running = False
             if event.type == pygame.MOUSEMOTION:
                 spinButton.mouseHover(mousePos)
+                textInputer.mouseHover(mousePos)
             #If the user clicked
             if event.type == pygame.MOUSEBUTTONDOWN:
                 #If the user clicked while hovering over the button
@@ -77,8 +81,15 @@ def main():
                     speed = random.randint(10, 50)
                     slowdown = random.randint(1, 7) / 1000
                     spinning = True
+                if textInputer.mouseHover(mousePos):
+                    textInputer.click()
+                else:
+                    textInputer.release()
             #Change the color of buttons back when mouse is released
             if event.type == pygame.MOUSEBUTTONUP:
                 spinButton.release()
+            if event.type == pygame.KEYDOWN:
+                if textInputer.isClicked():
+                    textInputer.keyInput(event.unicode)
 
 main()
