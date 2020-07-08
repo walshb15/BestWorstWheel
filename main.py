@@ -47,6 +47,8 @@ def main():
     textInputer = InputField((center[0]-150, height-75), (300, 50), "Comic Sans MS", 30)
     addButton = Button("Add Item", (center[0] + 175, height-75), (125, 50), (0, 255, 0),
                        (247, 255, 5), (0, 135, 23), "Comic Sans MS", 20, black)
+    delButton = Button("Delete Item", (center[0] - 300, height-75), (125, 50), (255, 0, 0),
+                       (247, 255, 5), (0, 135, 23), "Comic Sans MS", 20, black)
     #Game loop
     while running:
         mousePos = pygame.mouse.get_pos()
@@ -64,6 +66,7 @@ def main():
         #Draw the buttons
         spinButton.draw(surface, black)
         addButton.draw(surface, black)
+        delButton.draw(surface, black)
         textInputer.draw(surface)
         #update the display
         pygame.display.update()
@@ -75,6 +78,7 @@ def main():
             if event.type == pygame.MOUSEMOTION:
                 spinButton.mouseHover(mousePos)
                 addButton.mouseHover(mousePos)
+                delButton.mouseHover(mousePos)
                 textInputer.mouseHover(mousePos)
             #If the user clicked
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -86,6 +90,7 @@ def main():
                     slowdown = random.randint(1, 7) / 1000
                     spinning = True
                 if addButton.mouseHover(mousePos):
+                    addButton.click()
                     addText = textInputer.getText()
                     if addText.strip() != "":
                         movies.append(addText)
@@ -102,6 +107,8 @@ def main():
                     else:
                         textInputer.click()
                     textInputer.clearText()
+                if delButton.mouseHover(mousePos):
+                    delButton.click()
                 if textInputer.mouseHover(mousePos):
                     textInputer.click()
                 else:
@@ -109,6 +116,8 @@ def main():
             #Change the color of buttons back when mouse is released
             if event.type == pygame.MOUSEBUTTONUP:
                 spinButton.release()
+                addButton.release()
+                delButton.release()
             if event.type == pygame.KEYDOWN:
                 if textInputer.isClicked():
                     textInputer.keyInput(event.unicode)
