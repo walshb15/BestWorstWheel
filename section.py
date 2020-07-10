@@ -34,6 +34,9 @@ class Section:
     def __repr__(self):
         return self.name
 
+    def getName(self):
+        return self.name
+
     #Function to draw the text for this section in the appropriate spot
     def draw(self, surface, angle, theta, offset):
         '''

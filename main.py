@@ -7,12 +7,30 @@ from inputfield import InputField
 import random
 import sqlite3
 
+def updateCalculations(movies, circumfrence, radius):
+    '''
+    Function to calculate the arc length, angle between wheel items,
+    and the chord length between the items on the wheel.
+
+    movies: The list of items to use
+    circumfrence: The circumfrence of the circle
+    radius: The radius of the circle
+    '''
+    if len(movies) > 0:
+        arclen = degrees(circumfrence / len(movies))
+    else:
+        arclen = 360
+    #Central angle in degrees
+    theta = arclen / radius
+    chord = 2 * radius * sin(radians(theta) / 2)
+    return arclen, theta, chord
+    
 def main():
     pygame.init()
     myfont = pygame.font.SysFont('Comic Sans MS', 20)
     white = (255, 255, 255)
     black = (0, 0, 0)
-    movies = ["Who Killed Captain Alex", "Killer Bean Forever", "Backstroke of the West", "Shriek of the Mutilated"]
+    movies = ["Who Killed Captain Alex", "Killer Bean Forever", "Backstroke of the West", "Shriek of the Mutilated", "Troll 2"]
     #movies = ["Troll 2", "The Room", "Miami Connection"]
     #movies = ["Troll 2", "The Room", "Miami Connection", "Manos: The Hands of Fate", "Sharknado", "Birdemic", "Ghost Shark"]
     running = True
@@ -25,13 +43,8 @@ def main():
     center = (int(width / 2), int(height / 2))
     radius = int(width / 3)
     circumfrence = 2 * radius * pi
-    if len(movies) > 0:
-        arclen = degrees(circumfrence / len(movies))
-    else:
-        arclen = 360
-    #Central angle in degrees
-    theta = arclen / radius
-    chord = 2 * radius * sin(radians(theta) / 2)
+    #Perform initial circle calculations
+    arclen, theta, chord = updateCalculations(movies, circumfrence, radius)
     #The current angle of rotation
     angle = radians(0)
     pygame.display.flip()
@@ -48,7 +61,7 @@ def main():
     addButton = Button("Add Item", (center[0] + 175, height-75), (125, 50), (0, 255, 0),
                        (247, 255, 5), (0, 135, 23), "Comic Sans MS", 20, black)
     delButton = Button("Delete Item", (center[0] - 300, height-75), (125, 50), (255, 0, 0),
-                       (247, 255, 5), (0, 135, 23), "Comic Sans MS", 20, black)
+                       (247, 255, 5), (128, 0, 0), "Comic Sans MS", 20, black)
     #Game loop
     while running:
         mousePos = pygame.mouse.get_pos()
@@ -94,21 +107,19 @@ def main():
                     addText = textInputer.getText()
                     if addText.strip() != "":
                         movies.append(addText)
-                        '''REUSED CODE'''
-                        if len(movies) > 0:
-                            arclen = degrees(circumfrence / len(movies))
-                        else:
-                            arclen = 360
-                        #Central angle in degrees
-                        theta = arclen / radius
-                        chord = 2 * radius * sin(radians(theta) / 2)
-                        '''REUSED CODE'''
+                        arclen, theta, chord = updateCalculations(movies, circumfrence, radius)
                         wheel.addItem(movies[-1])
+                        textInputer.clearText()
                     else:
                         textInputer.click()
-                    textInputer.clearText()
                 if delButton.mouseHover(mousePos):
                     delButton.click()
+                    remText = textInputer.getText()
+                    if remText.strip() != "":
+                        movies.remove(remText)
+                        arclen, theta, chord = updateCalculations(movies, circumfrence, radius)
+                        wheel.deleteItem(remText)
+                        textInputer.clearText()
                 if textInputer.mouseHover(mousePos):
                     textInputer.click()
                 else:

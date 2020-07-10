@@ -17,6 +17,15 @@ class Wheel:
         newSection = Section(i, self.center, self.radius, len(self.items))
         self.sections.append(newSection)
 
+    def deleteItem(self, item):
+        toDelete = -1
+        for num, j in enumerate(self.sections):
+            if j.getName() == item:
+                toDelete = num
+        if toDelete >= 0:
+            self.sections.pop(toDelete)
+        print(self.sections)
+
     def draw(self, surface, outline, angle, dist):
         '''
         Draw the circle that will house the sections
