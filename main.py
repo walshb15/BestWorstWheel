@@ -74,10 +74,10 @@ def main():
     running = True
     spinning = False
     #Note, display size currently affects how fast the circle spins
-    screen = pygame.display.set_mode((700, 700), pygame.HWSURFACE)
+    screen = pygame.display.set_mode((700, 700), pygame.HWSURFACE|pygame.RESIZABLE)
     screen.fill(white)
     surface = pygame.display.get_surface()
-    width, height = surface.get_size()
+    width, height = screen.get_size()
     center = (int(width / 2), int(height / 2))
     radius = int(width / 3)
     circumfrence = 2 * radius * pi
@@ -92,8 +92,6 @@ def main():
     slowdown = random.randint(1, 7) / 1000
     print("SPEED:", speed)
     print("SLOWDOWN:", slowdown)
-    #Points of the arrow that will point to the winning item
-    tri_points = [(350, 115), (330, 95), (370, 95)]
     #Spin button
     spinButton = Button("SPIN", (width-125, 25), (100, 50), (0, 255, 0),
                         (247, 255, 5), (0, 135, 23), "Comic Sans MS", 30, black)
@@ -104,6 +102,10 @@ def main():
                        (247, 255, 5), (128, 0, 0), "Comic Sans MS", 20, black)
     #Game loop
     while running:
+        #Points of the arrow that will point to the winning item
+        tri_points = [(center[0], center[1] - radius - 10),
+                       (center[0] - 10, center[1] - radius - 30),
+                       (center[0] + 10, center[1] - radius - 30)]
         mousePos = pygame.mouse.get_pos()
         if spinning and len(movies) > 0:
             #Modify the angle so that the sections will rotate
@@ -117,10 +119,10 @@ def main():
         #Create and draw a section
         wheel.draw(surface, black, angle, radians(theta))
         #Draw the buttons
-        spinButton.draw(surface, black)
-        addButton.draw(surface, black)
-        delButton.draw(surface, black)
-        textInputer.draw(surface)
+        spinButton.draw(surface, (width-125, 25), black)
+        addButton.draw(surface, (center[0] + 175, height-75), black)
+        delButton.draw(surface, (center[0] - 300, height-75) ,black)
+        textInputer.draw(surface, (center[0]-150, height-75))
         #update the display
         pygame.display.update()
         #Handle user events such as key presses or clicks
@@ -130,6 +132,15 @@ def main():
                 conn.close()
                 pygame.quit()
                 running = False
+            if event.type == pygame.VIDEORESIZE:
+                screen = pygame.display.set_mode((event.w, event.h), pygame.HWSURFACE|pygame.RESIZABLE)
+                width, height = screen.get_size()
+                center = (int(width / 2), int(height / 2))
+                radius = int(width / 3)
+                circumfrence = 2 * radius * pi
+                arclen, theta, chord = updateCalculations(movies, circumfrence, radius)
+                wheel.setCenter(center)
+                wheel.setRadius(radius)
             #If the user is moving the mouse around, check
             #if they are hovering over any of the buttons
             if event.type == pygame.MOUSEMOTION:

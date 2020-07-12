@@ -13,6 +13,18 @@ class Wheel:
             newSection = Section(i, self.center, self.radius, self)
             self.sections.append(newSection)
 
+    def getCenter(self):
+        return self.center
+
+    def getRadius(self):
+        return self.radius
+
+    def setCenter(self, c):
+        self.center = c
+
+    def setRadius(self, r):
+        self.radius = r
+
     def getSectionCount(self):
         '''
         Function to get the number of sections on the wheel

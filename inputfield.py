@@ -31,13 +31,16 @@ class InputField(Button):
     def clearText(self):
         self.text = ""
 
-    def draw(self, surface):
+    def draw(self, surface, pos):
         '''
         Function to draw the field. This function is a bit messy, so you may
         want to come back and optimize it later.
 
         surface: The surface to draw to
+        pos: The position to draw at
         '''
+        self.position = pos
+        self.center = (pos[0] + self.size[0] / 2, pos[1] + self.size[1] / 2)
         #Text will be drawn with drawn with an offset of 5 to x and y
         textPos = (self.position[0] + 5,
                    self.position[1] + 5)

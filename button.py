@@ -30,13 +30,16 @@ class Button:
         #Variable to check if the button has been clicked
         self.clicked = False
 
-    def draw(self, surface, outline=None):
+    def draw(self, surface, pos, outline=None):
         '''
         Function to draw the button
 
         surface: The surface to draw the button on
         outline: Color the outline of the button should have (None for no outline)
+        pos: The position to draw at
         '''
+        self.position = pos
+        self.center = (pos[0] + self.size[0] / 2, pos[1] + self.size[1] / 2)
         #IF the button is clicked, draw the button with the clicked color
         if self.clicked:
             pygame.draw.rect(surface, self.cColor, (self.position[0], self.position[1],

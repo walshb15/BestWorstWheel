@@ -48,14 +48,16 @@ class Section:
         theta: The angle in radians between each section
         offset: The current section we are on (0 to n sections)
         '''
-        rotsurface, textrect = rotate(self.textsurface, angle, self.center, theta, offset)
+        center = self.wheel.getCenter()
+        radius = self.wheel.getRadius()
+        rotsurface, textrect = rotate(self.textsurface, angle, center, theta, offset)
         place = textrect.topleft
-        e1 = (place[0] + (self.radius / 2) * cos(angle + (0.5 + offset) * theta),
-              place[1] + (self.radius / 2) * sin(-angle - (0.5 + offset) * theta))
+        e1 = (place[0] + (radius / 2) * cos(angle + (0.5 + offset) * theta),
+              place[1] + (radius / 2) * sin(-angle - (0.5 + offset) * theta))
         #If there is more than one section, draw the text in the middle of each section
         if (self.wheel.getSectionCount() > 1):
             surface.blit(rotsurface, e1)
         #If there is only one section, draw the text at the center of the wheel
         else:
-            surface.blit(rotsurface, (self.center[0] - textrect.width / 2,
-                                      self.center[1] - textrect.height / 2))
+            surface.blit(rotsurface, (center[0] - textrect.width / 2,
+                                      center[1] - textrect.height / 2))
