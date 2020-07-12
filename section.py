@@ -19,12 +19,12 @@ def rotate(surface, a, pos, diff, offset):
 
 #This class represents the elemenets inside each slice of the wheel.
 class Section:
-    def __init__(self, text, c, r, count):
+    def __init__(self, text, c, r, wheel):
         self.name = text
         self.center = c
         self.radius = r
         #Number of sections
-        self.count = count
+        self.wheel = wheel
         textlen = len(text)
         fontsize = 18
         self.font = pygame.font.SysFont('Comic Sans MS', fontsize)
@@ -51,7 +51,8 @@ class Section:
         place = textrect.topleft
         e1 = (place[0] + (self.radius / 2) * cos(angle + (0.5 + offset) * theta),
               place[1] + (self.radius / 2) * sin(-angle - (0.5 + offset) * theta))
-        if (self.count > 1):
+        #If there is more than one section, draw the text in the middle of each section
+        if (self.wheel.getSectionCount() > 1):
             surface.blit(rotsurface, e1)
         #If there is only one section, draw the text at the center of the wheel
         else:

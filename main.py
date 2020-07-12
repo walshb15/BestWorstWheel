@@ -30,7 +30,7 @@ def main():
     myfont = pygame.font.SysFont('Comic Sans MS', 20)
     white = (255, 255, 255)
     black = (0, 0, 0)
-    movies = ["Who Killed Captain Alex", "Killer Bean Forever", "Backstroke of the West", "Shriek of the Mutilated", "Troll 2"]
+    movies = ["Who Killed Captain Alex", "Killer Bean Forever", "Backstroke of the West", "Shriek of the Mutilated"]
     #movies = ["Troll 2", "The Room", "Miami Connection"]
     #movies = ["Troll 2", "The Room", "Miami Connection", "Manos: The Hands of Fate", "Sharknado", "Birdemic", "Ghost Shark"]
     running = True

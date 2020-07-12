@@ -10,11 +10,14 @@ class Wheel:
         self.sections = list()
         self.items = items
         for i in self.items:
-            newSection = Section(i, self.center, self.radius, len(self.items))
+            newSection = Section(i, self.center, self.radius, self)
             self.sections.append(newSection)
 
+    def getSectionCount(self):
+        return len(self.sections)
+
     def addItem(self, i):
-        newSection = Section(i, self.center, self.radius, len(self.items))
+        newSection = Section(i, self.center, self.radius, self)
         self.sections.append(newSection)
 
     def deleteItem(self, item):
