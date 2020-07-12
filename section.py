@@ -20,7 +20,9 @@ def rotate(surface, a, pos, diff, offset):
 #This class represents the elemenets inside each slice of the wheel.
 class Section:
     def __init__(self, text, c, r, wheel):
-        self.name = text
+        #The text is contained in a tuple due to the parametrized
+        #query. Just pull out the data from that tuple at the 0 index
+        self.name = text[0]
         self.center = c
         self.radius = r
         #Number of sections
@@ -28,7 +30,6 @@ class Section:
         textlen = len(text)
         fontsize = 18
         self.font = pygame.font.SysFont('Comic Sans MS', fontsize)
-        print(self.name, "size:", self.font.get_linesize())
         self.textsurface = self.font.render(self.name, True, (0, 0, 0))
 
     def __repr__(self):

@@ -24,15 +24,53 @@ def updateCalculations(movies, circumfrence, radius):
     theta = arclen / radius
     chord = 2 * radius * sin(radians(theta) / 2)
     return arclen, theta, chord
+
+def getFromDatabase(connection):
+    '''
+    Function to get the items stored in the databse
+
+    connection: The SQLite connection to pull from
+
+    returns: A list of values from the database
+    '''
+    return list(connection.execute("SELECT title FROM movies;"))
+
+def addToDatabase(connection, item):
+    '''
+    Function to add an item to the database
+
+    connection: SQLite connection to use
+    item: The item to add to the table
+    '''
+    connection.execute("INSERT INTO movies (title) VALUES (?);", (item,))
+    connection.commit()
+
+def deleteFromDatabase(connection, item):
+    '''
+    Function to delete an item from the database
+
+    connection: The SQLite connection to use
+    item: The item to delete from the table
+    '''
+    connection.execute('''DELETE FROM movies WHERE title = (?);''', (item,))
+    connection.commit()
     
 def main():
+    #SQLite connection
+    conn = sqlite3.connect("./wheel.db")
+    #conn = sqlite3.connect(":memory:")
+    c = conn.cursor()
+    #Create table to hold the items if one does not already exist.
+    #Prevent it from accepting duplicate titles
+    c.execute('''CREATE TABLE IF NOT EXISTS movies(title TEXT,
+                    CONSTRAINT no_duplicates UNIQUE (title));''')
     pygame.init()
     myfont = pygame.font.SysFont('Comic Sans MS', 20)
     white = (255, 255, 255)
     black = (0, 0, 0)
-    movies = ["Who Killed Captain Alex", "Killer Bean Forever", "Backstroke of the West", "Shriek of the Mutilated"]
-    #movies = ["Troll 2", "The Room", "Miami Connection"]
-    #movies = ["Troll 2", "The Room", "Miami Connection", "Manos: The Hands of Fate", "Sharknado", "Birdemic", "Ghost Shark"]
+    #Grab the items currently in the database
+    movies = getFromDatabase(conn)
+    print("MOVIES:", movies)
     running = True
     spinning = False
     #Note, display size currently affects how fast the circle spins
@@ -52,6 +90,8 @@ def main():
     wheel = Wheel(center, radius, movies)
     speed = random.randint(10, 50)
     slowdown = random.randint(1, 7) / 1000
+    print("SPEED:", speed)
+    print("SLOWDOWN:", slowdown)
     #Points of the arrow that will point to the winning item
     tri_points = [(350, 115), (330, 95), (370, 95)]
     #Spin button
@@ -83,11 +123,15 @@ def main():
         textInputer.draw(surface)
         #update the display
         pygame.display.update()
-        #Handle if the user hits the X button
+        #Handle user events such as key presses or clicks
         for event in pygame.event.get():
+            #Handle if the user hits the X button
             if event.type == pygame.QUIT:
+                conn.close()
                 pygame.quit()
                 running = False
+            #If the user is moving the mouse around, check
+            #if they are hovering over any of the buttons
             if event.type == pygame.MOUSEMOTION:
                 spinButton.mouseHover(mousePos)
                 addButton.mouseHover(mousePos)
@@ -102,21 +146,33 @@ def main():
                     speed = random.randint(10, 50)
                     slowdown = random.randint(1, 7) / 1000
                     spinning = True
+                    print("ANGLE:", angle)
+                    print("SPEED:", speed)
+                    print("SLOWDOWN:", slowdown)
                 if addButton.mouseHover(mousePos):
                     addButton.click()
                     addText = textInputer.getText()
                     if addText.strip() != "":
-                        movies.append(addText)
-                        arclen, theta, chord = updateCalculations(movies, circumfrence, radius)
-                        wheel.addItem(movies[-1])
-                        textInputer.clearText()
-                    else:
-                        textInputer.click()
+                        #movies.append(addText)
+                        try:
+                            addToDatabase(conn, addText)
+                            movies.clear()
+                            movies += getFromDatabase(conn)
+                            arclen, theta, chord = updateCalculations(movies, circumfrence, radius)
+                            wheel.addItem(movies[-1])
+                            textInputer.clearText()
+                        except sqlite3.IntegrityError:
+                            #Item already exists in the table
+                            print("Already in table")
+                            pass
                 if delButton.mouseHover(mousePos):
                     delButton.click()
                     remText = textInputer.getText()
                     if remText.strip() != "":
-                        movies.remove(remText)
+                        #movies.remove(remText)
+                        deleteFromDatabase(conn, remText)
+                        movies.clear()
+                        movies += getFromDatabase(conn)
                         arclen, theta, chord = updateCalculations(movies, circumfrence, radius)
                         wheel.deleteItem(remText)
                         textInputer.clearText()

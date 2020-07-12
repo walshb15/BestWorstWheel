@@ -14,20 +14,32 @@ class Wheel:
             self.sections.append(newSection)
 
     def getSectionCount(self):
+        '''
+        Function to get the number of sections on the wheel
+        '''
         return len(self.sections)
 
     def addItem(self, i):
+        '''
+        Function to add a new section to the wheel
+
+        i: The item title to add to the new section
+        '''
         newSection = Section(i, self.center, self.radius, self)
         self.sections.append(newSection)
 
     def deleteItem(self, item):
+        '''
+        Function to delete the section that contains a given item
+
+        item: The item to delete
+        '''
         toDelete = -1
         for num, j in enumerate(self.sections):
             if j.getName() == item:
                 toDelete = num
         if toDelete >= 0:
             self.sections.pop(toDelete)
-        print(self.sections)
 
     def draw(self, surface, outline, angle, dist):
         '''
