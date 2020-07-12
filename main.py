@@ -7,6 +7,19 @@ from inputfield import InputField
 import random
 import sqlite3
 
+def updateWheelSize(screen):
+    '''
+    Function to update variables relating to the size of the wheel
+
+    screen: The screen which you will use to get the size and calculate
+        its center
+    '''
+    width, height = screen.get_size()
+    center = (int(width / 2), int(height / 2))
+    radius = int(width / 3)
+    circumfrence = 2 * radius * pi
+    return width, height, center, radius, circumfrence
+
 def updateCalculations(movies, circumfrence, radius):
     '''
     Function to calculate the arc length, angle between wheel items,
@@ -77,10 +90,7 @@ def main():
     screen = pygame.display.set_mode((700, 700), pygame.HWSURFACE|pygame.RESIZABLE)
     screen.fill(white)
     surface = pygame.display.get_surface()
-    width, height = screen.get_size()
-    center = (int(width / 2), int(height / 2))
-    radius = int(width / 3)
-    circumfrence = 2 * radius * pi
+    width, height, center, radius, circumfrence = updateWheelSize(screen)
     #Perform initial circle calculations
     arclen, theta, chord = updateCalculations(movies, circumfrence, radius)
     #The current angle of rotation
@@ -116,7 +126,7 @@ def main():
         #Reset the screen
         screen.fill(white)
         pygame.draw.polygon(surface, (255, 0, 0), tri_points, 0)
-        #Create and draw a section
+        #Draw the wheel and the sections within it
         wheel.draw(surface, black, angle, radians(theta))
         #Draw the buttons
         spinButton.draw(surface, (width-125, 25), black)
@@ -134,10 +144,7 @@ def main():
                 running = False
             if event.type == pygame.VIDEORESIZE:
                 screen = pygame.display.set_mode((event.w, event.h), pygame.HWSURFACE|pygame.RESIZABLE)
-                width, height = screen.get_size()
-                center = (int(width / 2), int(height / 2))
-                radius = int(width / 3)
-                circumfrence = 2 * radius * pi
+                width, height, center, radius, circumfrence = updateWheelSize(screen)
                 arclen, theta, chord = updateCalculations(movies, circumfrence, radius)
                 wheel.setCenter(center)
                 wheel.setRadius(radius)
@@ -163,8 +170,8 @@ def main():
                 if addButton.mouseHover(mousePos):
                     addButton.click()
                     addText = textInputer.getText()
+                    #If the add text is not just whitespace, add it
                     if addText.strip() != "":
-                        #movies.append(addText)
                         try:
                             addToDatabase(conn, addText)
                             movies.clear()
@@ -179,8 +186,8 @@ def main():
                 if delButton.mouseHover(mousePos):
                     delButton.click()
                     remText = textInputer.getText()
+                    #If the remove text is not just whitespace, remove it
                     if remText.strip() != "":
-                        #movies.remove(remText)
                         deleteFromDatabase(conn, remText)
                         movies.clear()
                         movies += getFromDatabase(conn)
@@ -190,14 +197,19 @@ def main():
                 if textInputer.mouseHover(mousePos):
                     textInputer.click()
                 else:
+                    #Release the text inputer if the user clicked anywhere
+                    #outside of it
                     textInputer.release()
             #Change the color of buttons back when mouse is released
             if event.type == pygame.MOUSEBUTTONUP:
                 spinButton.release()
                 addButton.release()
                 delButton.release()
+            #Key events
             if event.type == pygame.KEYDOWN:
+                #if the user pressed a key while the text inputer is active
                 if textInputer.isClicked():
+                    #Input that key
                     textInputer.keyInput(event.unicode)
 
 main()
