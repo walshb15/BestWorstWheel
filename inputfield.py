@@ -4,7 +4,7 @@ from button import Button
 
 #Class for a field to input text into. Derived from button
 class InputField(Button):
-    def __init__(self, pos, size, font, fontsize):
+    def __init__(self, pos, size, font):
         '''
         Constructor
 
@@ -16,7 +16,7 @@ class InputField(Button):
         self.position = pos
         self.size = size
         self.center = (pos[0] + size[0] / 2, pos[1] + size[1] / 2)
-        self.font = pygame.font.SysFont(font, fontsize)
+        self.font = font
         self.text = ""
         self.clicked = False
         #This variable tracks how long it has been since the cursor was last shown

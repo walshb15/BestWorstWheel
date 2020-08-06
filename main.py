@@ -78,7 +78,10 @@ def main():
     c.execute('''CREATE TABLE IF NOT EXISTS movies(title TEXT,
                     CONSTRAINT no_duplicates UNIQUE (title));''')
     pygame.init()
+    #Try to use comic sans as the font. If it's not available,
+    #pygame automatically uses the default system font
     myfont = pygame.font.SysFont('Comic Sans MS', 20)
+    ifont = pygame.font.SysFont('Comic Sans MS', 30)
     white = (255, 255, 255)
     black = (0, 0, 0)
     #Grab the items currently in the database
@@ -104,12 +107,13 @@ def main():
     print("SLOWDOWN:", slowdown)
     #Spin button
     spinButton = Button("SPIN", (width-125, 25), (100, 50), (0, 255, 0),
-                        (247, 255, 5), (0, 135, 23), "Comic Sans MS", 30, black)
-    textInputer = InputField((center[0]-150, height-75), (300, 50), "Comic Sans MS", 30)
+                        (247, 255, 5), (0, 135, 23), ifont, black)
+    textInputer = InputField((center[0]-150, height-75), (300, 50),
+                             ifont)
     addButton = Button("Add Item", (center[0] + 175, height-75), (125, 50), (0, 255, 0),
-                       (247, 255, 5), (0, 135, 23), "Comic Sans MS", 20, black)
+                       (247, 255, 5), (0, 135, 23), myfont, black)
     delButton = Button("Delete Item", (center[0] - 300, height-75), (125, 50), (255, 0, 0),
-                       (247, 255, 5), (128, 0, 0), "Comic Sans MS", 20, black)
+                       (247, 255, 5), (128, 0, 0), myfont, black)
     #Game loop
     while running:
         #Points of the arrow that will point to the winning item

@@ -1,8 +1,9 @@
 import pygame
 
+#This class represents buttons that are shown on screen.
 class Button:
     def __init__(self, text, pos, size, idleColor, hoverColor, clickColor,
-                 font, fontsize, fontcolor):
+                 font, fontcolor):
         '''
         Constructor
 
@@ -25,7 +26,7 @@ class Button:
         self.iColor = idleColor
         self.hColor = hoverColor
         self.cColor = clickColor
-        self.font = pygame.font.SysFont(font, fontsize)
+        self.font = font
         self.textsurface = self.font.render(self.text, True, fontcolor)
         #Variable to check if the button has been clicked
         self.clicked = False
